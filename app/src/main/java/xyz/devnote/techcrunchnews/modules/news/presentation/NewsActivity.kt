@@ -28,6 +28,8 @@ class NewsActivity : AppCompatActivity(), LifecycleOwner {
 
         initViews()
         initViewModelListener()
+
+        viewModel.getNews()
     }
 
     private fun initViews() {
