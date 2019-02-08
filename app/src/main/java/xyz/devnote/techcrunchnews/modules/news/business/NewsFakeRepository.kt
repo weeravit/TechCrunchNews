@@ -1,4 +1,4 @@
-package xyz.devnote.techcrunchnews.modules.news
+package xyz.devnote.techcrunchnews.modules.news.business
 
 import kotlinx.coroutines.delay
 import xyz.devnote.techcrunchnews.modules.news.model.NewsRequest

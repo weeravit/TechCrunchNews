@@ -1,20 +1,23 @@
-package xyz.devnote.techcrunchnews.modules.news
+package xyz.devnote.techcrunchnews.modules.news.presentation
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import xyz.devnote.techcrunchnews.R
+import xyz.devnote.techcrunchnews.modules.news.business.NewsFakeRepository
+import xyz.devnote.techcrunchnews.modules.news.business.NewsService
 
 class NewsActivity : AppCompatActivity(), LifecycleOwner {
 
     private val viewModel by lazy {
         val repository = NewsFakeRepository()
         val service = NewsService(repository)
-        val factory = NewsViewModelFactory(service)
+        val factory = NewsViewModel.factory(service)
 
         ViewModelProviders.of(this, factory).get(NewsViewModel::class.java)
     }
@@ -22,17 +25,18 @@ class NewsActivity : AppCompatActivity(), LifecycleOwner {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
-        initListener()
+
         initViews()
+        initViewModelListener()
     }
 
     private fun initViews() {
 
     }
 
-    private fun initListener() {
+    private fun initViewModelListener() {
         viewModel.whenNewsError.observe(this, Observer {
-
+            Toast.makeText(this@NewsActivity, it, Toast.LENGTH_SHORT).show()
         })
 
         viewModel.whenNewsLoaded.observe(this, Observer {
@@ -41,7 +45,7 @@ class NewsActivity : AppCompatActivity(), LifecycleOwner {
     }
 
     companion object {
-        fun start(context : Context?) {
+        fun start(context: Context?) {
             val intent = Intent(context, NewsActivity::class.java)
             context?.startActivity(intent)
         }

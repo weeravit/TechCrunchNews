@@ -1,11 +1,13 @@
-package xyz.devnote.techcrunchnews.modules.news
+package xyz.devnote.techcrunchnews.modules.news.presentation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import xyz.devnote.techcrunchnews.modules.news.business.NewsService
 import xyz.devnote.techcrunchnews.modules.news.model.News
 import xyz.devnote.techcrunchnews.modules.news.model.NewsRequest
 
-class NewsViewModel(val service: NewsService) : ViewModel() {
+class NewsViewModel(private val service: NewsService) : ViewModel() {
 
     val whenNewsError = MutableLiveData<String>()
     val whenNewsLoaded = MutableLiveData<List<News>>()
@@ -28,5 +30,15 @@ class NewsViewModel(val service: NewsService) : ViewModel() {
         }
 
         whenNewsLoaded.postValue(items)
+    }
+
+    companion object {
+        fun factory(service : NewsService): ViewModelProvider.NewInstanceFactory {
+            return object : ViewModelProvider.NewInstanceFactory() {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return NewsViewModel(service) as T
+                }
+            }
+        }
     }
 }

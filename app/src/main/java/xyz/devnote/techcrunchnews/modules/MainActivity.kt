@@ -2,7 +2,7 @@ package xyz.devnote.techcrunchnews.modules
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import xyz.devnote.techcrunchnews.modules.news.NewsActivity
+import xyz.devnote.techcrunchnews.modules.news.presentation.NewsActivity
 
 class MainActivity : AppCompatActivity() {
 
