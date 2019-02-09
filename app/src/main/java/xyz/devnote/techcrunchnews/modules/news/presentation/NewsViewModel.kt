@@ -18,14 +18,14 @@ class NewsViewModel(private val service: NewsService) : ViewModel() {
     fun getNews(page: Int = 1) {
         GlobalScope.launch(Dispatchers.Main) {
             val request = NewsRequest(page = page)
-            val response = service.getNews(request)
+            val data = service.getNews(request)
 
-            if (response.isError()) {
-                whenNewsError.postValue(response.message)
+            if (data.isError) {
+                whenNewsError.postValue(data.message)
                 return@launch
             }
 
-            val items = response.articles?.map {
+            val items = data.result?.articles?.map {
                 News(
                     title = it?.title ?: "",
                     imageUrl = it?.urlToImage ?: "",
