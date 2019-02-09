@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_item_news.view.*
 import xyz.devnote.techcrunchnews.R
-import xyz.devnote.techcrunchnews.extension.loadByUrl
+import xyz.devnote.techcrunchnews.common.extension.loadByUrl
 import xyz.devnote.techcrunchnews.modules.news.model.News
 
 class NewsAdapter(private val items : ArrayList<News>,

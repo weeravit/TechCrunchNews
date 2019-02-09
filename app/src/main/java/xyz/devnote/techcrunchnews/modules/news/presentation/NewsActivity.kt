@@ -11,14 +11,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_news.*
 import xyz.devnote.techcrunchnews.R
-import xyz.devnote.techcrunchnews.modules.news.business.NewsFakeRepository
+import xyz.devnote.techcrunchnews.modules.news.business.NewsApiRepository
 import xyz.devnote.techcrunchnews.modules.news.business.NewsService
 import xyz.devnote.techcrunchnews.modules.news.model.News
 
-class NewsActivity : AppCompatActivity(), NewsAdapter.Listener, LifecycleOwner {
+class NewsActivity : AppCompatActivity(), NewsAdapter.Listener {
 
     private val viewModel by lazy {
-        val repository = NewsFakeRepository()
+        val repository = NewsApiRepository()
         val service = NewsService(repository)
         val factory = NewsViewModel.factory(service)
 
