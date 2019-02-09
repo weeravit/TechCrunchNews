@@ -8,11 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_news.*
 import xyz.devnote.techcrunchnews.R
 import xyz.devnote.techcrunchnews.modules.news.business.NewsFakeRepository
 import xyz.devnote.techcrunchnews.modules.news.business.NewsService
+import xyz.devnote.techcrunchnews.modules.news.model.News
 
-class NewsActivity : AppCompatActivity(), LifecycleOwner {
+class NewsActivity : AppCompatActivity(), NewsAdapter.Listener, LifecycleOwner {
 
     private val viewModel by lazy {
         val repository = NewsFakeRepository()
@@ -33,7 +36,10 @@ class NewsActivity : AppCompatActivity(), LifecycleOwner {
     }
 
     private fun initViews() {
-
+        recyclerview.apply {
+            layoutManager = LinearLayoutManager(this@NewsActivity)
+            adapter = NewsAdapter(arrayListOf(), this@NewsActivity)
+        }
     }
 
     private fun initViewModelListener() {
@@ -42,8 +48,13 @@ class NewsActivity : AppCompatActivity(), LifecycleOwner {
         })
 
         viewModel.whenNewsLoaded.observe(this, Observer {
-
+            val adapter = recyclerview.adapter as NewsAdapter
+            adapter.addItems(it)
         })
+    }
+
+    override fun onNewsClick(news: News) {
+        Toast.makeText(this, news.title, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

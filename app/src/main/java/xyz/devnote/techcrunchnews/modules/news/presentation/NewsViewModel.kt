@@ -13,7 +13,7 @@ import xyz.devnote.techcrunchnews.modules.news.model.NewsRequest
 class NewsViewModel(private val service: NewsService) : ViewModel() {
 
     val whenNewsError = MutableLiveData<String>()
-    val whenNewsLoaded = MutableLiveData<List<News>>()
+    val whenNewsLoaded = MutableLiveData<ArrayList<News>>()
 
     fun getNews(page: Int = 1) {
         GlobalScope.launch(Dispatchers.Main) {
@@ -33,7 +33,7 @@ class NewsViewModel(private val service: NewsService) : ViewModel() {
                 )
             }
 
-            whenNewsLoaded.postValue(items)
+            whenNewsLoaded.postValue(ArrayList(items))
         }
     }
 
