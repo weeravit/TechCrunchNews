@@ -10,11 +10,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_news.*
-import xyz.devnote.techcrunchnews.R
 import xyz.devnote.techcrunchnews.modules.news.business.NewsApiRepository
 import xyz.devnote.techcrunchnews.modules.news.business.NewsService
 import xyz.devnote.techcrunchnews.modules.news.model.News
 import xyz.devnote.techcrunchnews.utils.EndlessScrollListener
+import android.net.Uri
+import xyz.devnote.techcrunchnews.R
+
 
 class NewsActivity : AppCompatActivity(), NewsAdapter.Listener, EndlessScrollListener.Listener {
 
@@ -57,7 +59,8 @@ class NewsActivity : AppCompatActivity(), NewsAdapter.Listener, EndlessScrollLis
     }
 
     override fun onNewsClick(news: News) {
-        Toast.makeText(this, news.title, Toast.LENGTH_SHORT).show()
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(news.link))
+        startActivity(intent)
     }
 
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
