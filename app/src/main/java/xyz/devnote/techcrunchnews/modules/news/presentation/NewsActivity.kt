@@ -8,13 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_news.*
 import xyz.devnote.techcrunchnews.R
 import xyz.devnote.techcrunchnews.modules.news.business.NewsApiRepository
 import xyz.devnote.techcrunchnews.modules.news.business.NewsService
 import xyz.devnote.techcrunchnews.modules.news.model.News
+import xyz.devnote.techcrunchnews.utils.EndlessScrollListener
 
-class NewsActivity : AppCompatActivity(), NewsAdapter.Listener {
+class NewsActivity : AppCompatActivity(), NewsAdapter.Listener, EndlessScrollListener.Listener {
 
     private val viewModel by lazy {
         val repository = NewsApiRepository()
@@ -36,8 +38,10 @@ class NewsActivity : AppCompatActivity(), NewsAdapter.Listener {
 
     private fun initViews() {
         recyclerview.apply {
-            layoutManager = LinearLayoutManager(this@NewsActivity)
+            val linearLayoutManager = LinearLayoutManager(this@NewsActivity)
+            layoutManager = linearLayoutManager
             adapter = NewsAdapter(arrayListOf(), this@NewsActivity)
+            addOnScrollListener(EndlessScrollListener(linearLayoutManager, this@NewsActivity))
         }
     }
 
@@ -54,6 +58,10 @@ class NewsActivity : AppCompatActivity(), NewsAdapter.Listener {
 
     override fun onNewsClick(news: News) {
         Toast.makeText(this, news.title, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+        viewModel.getNews(page = page)
     }
 
     companion object {
