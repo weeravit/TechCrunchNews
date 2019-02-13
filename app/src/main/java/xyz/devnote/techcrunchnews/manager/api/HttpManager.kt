@@ -6,8 +6,7 @@ import xyz.devnote.techcrunchnews.common.Constants
 import xyz.devnote.techcrunchnews.modules.news.model.NewsRequest
 import xyz.devnote.techcrunchnews.modules.news.model.NewsResponse
 
-
-class HttpManager {
+object HttpManager {
 
     private val service by lazy {
         val retrofit = Retrofit.Builder()
@@ -20,11 +19,5 @@ class HttpManager {
 
     fun getNews(request: NewsRequest, callback: InterceptCallback<NewsResponse>) {
         service.getNews(request.page!!).enqueue(callback)
-    }
-
-    companion object {
-        private val instance = HttpManager()
-
-        fun getInstance() = instance
     }
 }

@@ -11,23 +11,26 @@ import kotlin.coroutines.suspendCoroutine
 class NewsApiRepository : NewsRepository {
     override suspend fun getNews(request: NewsRequest): Data<NewsResponse> {
         return suspendCoroutine {
-            HttpManager.getInstance()
-                .getNews(request, object : InterceptCallback<NewsResponse>() {
-                    override fun onSuccess(result: NewsResponse?) {
-                        it.resume(Data(
+            HttpManager.getNews(request, object : InterceptCallback<NewsResponse>() {
+                override fun onSuccess(result: NewsResponse?) {
+                    it.resume(
+                        Data(
                             isError = result?.isError() ?: false,
                             message = result?.message ?: "",
                             result = result
-                        ))
-                    }
+                        )
+                    )
+                }
 
-                    override fun onFailure(message: String?) {
-                        it.resume(Data(
+                override fun onFailure(message: String?) {
+                    it.resume(
+                        Data(
                             isError = true,
                             message = message ?: ""
-                        ))
-                    }
-                })
+                        )
+                    )
+                }
+            })
         }
     }
 }
